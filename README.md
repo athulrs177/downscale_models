@@ -47,7 +47,8 @@ iii. Output Layer:
         Kernel Size: (6,6) (Increased kernel size to avoid gaps with strides of 5)
         Strides: (5,5) (Significant upscaling)
         Activation: ReLU
-        Function: Generates the downscaled precipitation output, expanding input features to the desired lower-resolution output, effectively downscaling precipitation data by a factor of 10 in both latitude and longitude.
+        Function: Generates the downscaled precipitation output, expanding input features to the desired lower-resolution output, \\
+        effectively downscaling precipitation data by a factor of 10 in both latitude and longitude.
 
 
 ## 2) Deterministic Wasserstein GAN with gradient penalalties (det. WGAN-GP)
@@ -71,7 +72,8 @@ The generator is designed to transform low-dimensional noise or input features i
             Batch Normalization: Optional layer to stabilize training.
             Dropout: Optional layer to reduce overfitting.
     Upsampling Blocks:
-        The generator includes five upsampling blocks (deconv_block) to upscale the feature maps, with the final upsampling layer (Conv2DTranspose) generating the output with a shape suitable for the application (e.g., precipitation data).
+        The generator includes five upsampling blocks (deconv_block) to upscale the feature maps, with the final upsampling layer (Conv2DTranspose)\\
+        generating the output with a shape suitable for the application (e.g., precipitation data).
     Output Layer: The final layer uses a transposed convolution with 1 filter and a ReLU activation function to produce the output tensor.
 
 ii. Discriminator:
@@ -89,8 +91,8 @@ The discriminator assesses the authenticity of generated data, distinguishing be
     Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is real or generated.
 iii. Alternative Upsampling Block: upsampling_block
 
-The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. \\
-This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing\\
+The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. \
+This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing \
 spatial dimensions while extracting meaningful features.
 Function Signature:
 

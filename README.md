@@ -186,8 +186,10 @@ Parameters:
     fake_output (tf.Tensor): The output from the discriminator for the generated images.
     fake_images (tf.Tensor): The generated images.
     real_images (tf.Tensor): The real images used for comparison.
-    penalty_weight (float): The weight applied to the penalty term, controlling its influence on the total loss (default: 15).
-    ssim_weight (float): The weight applied to the SSIM loss term, adjusting its impact on the total loss (default: 15).
+    penalty_weight (float): The weight applied to the penalty term, controlling its influence on the total loss (default: 15, 
+    do not change here, modify in the train_step function described below).
+    ssim_weight (float): The weight applied to the SSIM loss term, adjusting its impact on the total loss (default: 15, 
+    do not change here, modify in the train_step function described below).
 
 Returns:
 

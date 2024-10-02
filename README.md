@@ -65,7 +65,7 @@ The generator is designed to transform low-dimensional noise or input features i
 
     Input Layer: Accepts an input tensor of shape input_shape, representing the initial features or noise vector.
     Convolutional Blocks:
-        The generator contains six convolutional blocks (conv_block), progressively increasing the number of filters from 16 to 512. Each block consists of:
+        The generator contains six convolutional blocks '''(conv_block)''', progressively increasing the number of filters from 16 to 512. Each block consists of:
             Convolution Layer: Applies convolution with specified filters and kernel size.
             Activation Function: Uses Leaky ReLU (α = 0.2) for non-linearity.
             Batch Normalization: Optional layer to stabilize training.
@@ -87,3 +87,51 @@ The discriminator assesses the authenticity of generated data, distinguishing be
             Dropout: Optional layer to reduce overfitting.
     Max Pooling and Dropout: After the convolutional layers, a max pooling layer reduces spatial dimensions, followed by a dropout layer to further prevent overfitting.
     Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is real or generated.
+iii. Alternative Upsampling Block: upsampling_block
+
+The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing spatial dimensions while extracting meaningful features.
+Function Signature:
+
+python
+
+def upsampling_block(inputs, filters, kernel_size, upsample_factor, name, dilation_rate, strides, use_batch_norm=True, use_dropout=True):
+
+Parameters:
+
+    inputs: Tensor input from the previous layer, representing the feature maps to be upsampled.
+    filters: Integer, the number of filters for the convolution layer following the upsampling.
+    kernel_size: Tuple specifying the size of the convolution kernel.
+    upsample_factor: Integer, the scaling factor for upsampling the input feature maps (e.g., 2 for doubling the dimensions).
+    name: String, the name prefix for the layers in this block for easier identification.
+    dilation_rate: Tuple specifying the dilation rate for the convolution operation.
+    strides: Tuple specifying the stride length for the convolution operation.
+    use_batch_norm: Boolean, indicating whether to include a batch normalization layer (default: True).
+    use_dropout: Boolean, indicating whether to include a dropout layer (default: True).
+
+Operation:
+
+    Upsampling:
+        The block begins with an UpSampling2D layer, which increases the spatial dimensions of the input feature maps by the specified upsample_factor. This operation is performed without learnable parameters, ensuring a straightforward and efficient upsampling method.
+
+    Convolution:
+        Following the upsampling, a Conv2D layer applies convolution using the specified number of filters and kernel size. This layer focuses on learning spatial hierarchies and patterns from the upsampled data.
+
+    Activation:
+        The output of the convolution layer is passed through a LeakyReLU activation function (with α = 0.2), introducing non-linearity to the model, allowing it to learn complex mappings.
+
+    Batch Normalization:
+        If enabled, a BatchNormalization layer is applied, helping to stabilize and accelerate the training process by normalizing the activations.
+
+    Dropout:
+        If enabled, a Dropout layer is included to mitigate overfitting by randomly setting a fraction of input units to zero during training.
+
+Key Differences from deconv_block:
+
+    Upsampling Method: Unlike the deconv_block, which relies on Conv2DTranspose to perform both upsampling and convolution in a single layer, the upsampling_block separates these operations. This distinction can lead to improved flexibility and control over the upsampling process.
+    Parameter Efficiency: The UpSampling2D layer does not have learnable parameters, making it more efficient compared to Conv2DTranspose, which can be parameter-heavy. This can lead to faster training and potentially better generalization.
+    Feature Learning: The use of a dedicated convolution layer after upsampling allows for more targeted learning from the expanded feature maps, which may enhance the model’s ability to capture complex features.
+
+Advantages:
+
+    Improved Generalization: By reducing the number of parameters and providing more control over the feature extraction process, this architecture can help mitigate overfitting and enhance model performance.
+    Flexibility in Design: The separation of upsampling and convolution offers more design flexibility for experimenting with different configurations and layer parameters.

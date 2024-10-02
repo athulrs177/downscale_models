@@ -1,6 +1,6 @@
 # Steps to install conda environment
 1) ```
-   conda env create -f environment.yaml
+   conda env create -f nn_env_athul.yaml
    ```
 
 

@@ -47,7 +47,7 @@ iii. Output Layer:
         Kernel Size: (6,6) (Increased kernel size to avoid gaps with strides of 5)
         Strides: (5,5) (Significant upscaling)
         Activation: ReLU
-        Function: Generates the downscaled precipitation output, expanding input features to the desired lower-resolution output, \\
+        Function: Generates the downscaled precipitation output, expanding input features to the desired lower-resolution output, 
         effectively downscaling precipitation data by a factor of 10 in both latitude and longitude.
 
 
@@ -72,7 +72,7 @@ The generator is designed to transform low-dimensional noise or input features i
             Batch Normalization: Optional layer to stabilize training.
             Dropout: Optional layer to reduce overfitting.
     Upsampling Blocks:
-        The generator includes five upsampling blocks (deconv_block) to upscale the feature maps, with the final upsampling layer (Conv2DTranspose)\\
+        The generator includes five upsampling blocks (deconv_block) to upscale the feature maps, with the final upsampling layer (Conv2DTranspose)
         generating the output with a shape suitable for the application (e.g., precipitation data).
     Output Layer: The final layer uses a transposed convolution with 1 filter and a ReLU activation function to produce the output tensor.
 
@@ -111,13 +111,16 @@ Parameters:
 Operation:
 
     Upsampling:
-        The block begins with an UpSampling2D layer, which increases the spatial dimensions of the input feature maps by the specified upsample_factor. This operation is performed without learnable parameters, ensuring a straightforward and efficient upsampling method.
+        The block begins with an UpSampling2D layer, which increases the spatial dimensions of the input feature maps by the specified upsample_factor. 
+        This operation is performed without learnable parameters, ensuring a straightforward and efficient upsampling method.
 
     Convolution:
-        Following the upsampling, a Conv2D layer applies convolution using the specified number of filters and kernel size. This layer focuses on learning spatial hierarchies and patterns from the upsampled data.
+        Following the upsampling, a Conv2D layer applies convolution using the specified number of filters and kernel size. 
+        This layer focuses on learning spatial hierarchies and patterns from the upsampled data.
 
     Activation:
-        The output of the convolution layer is passed through a LeakyReLU activation function (with α = 0.2), introducing non-linearity to the model, allowing it to learn complex mappings.
+        The output of the convolution layer is passed through a LeakyReLU activation function (with α = 0.2), introducing non-linearity to the model, 
+        allowing it to learn complex mappings.
 
     Batch Normalization:
         If enabled, a BatchNormalization layer is applied, helping to stabilize and accelerate the training process by normalizing the activations.
@@ -127,11 +130,24 @@ Operation:
 
 Key Differences from deconv_block:
 
-    Upsampling Method: Unlike the deconv_block, which relies on Conv2DTranspose to perform both upsampling and convolution in a single layer, the upsampling_block separates these operations. This distinction can lead to improved flexibility and control over the upsampling process.
-    Parameter Efficiency: The UpSampling2D layer does not have learnable parameters, making it more efficient compared to Conv2DTranspose, which can be parameter-heavy. This can lead to faster training and potentially better generalization.
-    Feature Learning: The use of a dedicated convolution layer after upsampling allows for more targeted learning from the expanded feature maps, which may enhance the model’s ability to capture complex features.
+    Upsampling Method: Unlike the deconv_block, which relies on Conv2DTranspose to perform both upsampling and convolution in a single layer, 
+    the upsampling_block separates these operations. This distinction can lead to improved flexibility and control over the upsampling process.
+    
+    Parameter Efficiency: The UpSampling2D layer does not have learnable parameters, making it more efficient compared to Conv2DTranspose, 
+    which can be parameter-heavy. This can lead to faster training and potentially better generalization.
+    
+    Feature Learning: The use of a dedicated convolution layer after upsampling allows for more targeted learning from the expanded feature maps, 
+    which may enhance the model’s ability to capture complex features.
 
 Advantages:
 
-    Improved Generalization: By reducing the number of parameters and providing more control over the feature extraction process, this architecture can help mitigate overfitting and enhance model performance.
-    Flexibility in Design: The separation of upsampling and convolution offers more design flexibility for experimenting with different configurations and layer parameters.
+    Improved Generalization: By reducing the number of parameters and providing more control over the feature extraction process, 
+    this architecture can help mitigate overfitting and enhance model performance. Also seen to overcome checker-board artefacts
+    generated using transposed convolutions.
+    Flexibility in Design: The separation of upsampling and convolution offers more design flexibility for experimenting with 
+    different configurations and layer parameters.
+
+Disadvantages:
+    
+    Longer training times: Since the learned-upsampling (using transposed convolutions) is split into simple upsampling first 
+    followed by convolutions which learn the necessary weights, this alternative method is seen to be significanlty slower.  

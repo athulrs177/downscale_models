@@ -89,7 +89,9 @@ The discriminator assesses the authenticity of generated data, distinguishing be
     Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is real or generated.
 iii. Alternative Upsampling Block: upsampling_block
 
-The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing spatial dimensions while extracting meaningful features.
+The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. \\
+This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing\\
+spatial dimensions while extracting meaningful features.
 Function Signature:
 
 Parameters:

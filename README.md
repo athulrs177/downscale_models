@@ -2,6 +2,7 @@
 
 ## 1) Simple CNN model
 ### Notebook: transposecnn2d_downscale_high_res_europ.ipynb
+#### Model Architecture
 i. Input Layer:
 
         Shape: Accepts an input tensor of shape input_shape, representing the precipitation data to be downscaled, typically including time, latitude, and longitude dimensions.
@@ -35,7 +36,7 @@ The model employs several transposed convolutional layers to gradually refine th
     Layer 4:
         Filters: 32
         Kernel Size: (3,3)
-        Strides: (2,2) (Downsampling)
+        Strides: (2,2) 
         Activation: Leaky ReLU (α = 0.2)
         Function: Reduces spatial dimensions by a factor of 2 while learning lower-level features critical for the upscaling process.
 

@@ -390,7 +390,7 @@ whose gradients are bounded. This prevents the discriminator from becoming overl
 2. Improved Training of Wasserstein GANs; https://arxiv.org/abs/1704.00028v3
 
 
-## 3) Probabilistic Wasserstein GAN with gradient penalalties (prob. WGAN-GP)
+## 3) Probabilistic Wasserstein GAN with gradient penalties (prob. WGAN-GP)
 
 ### Notebooks: 
 a) wgan_prob_downscale_high_res_europe.ipynb (initial few runs), 
@@ -405,4 +405,17 @@ The model architecture of probabilistic WGAN model is very similar to the determ
 the generation of an ensemble of downscaled outputs. These differences are explained here.
 
 i. Generator and Discriminator architecture
-These new versions of conv_block and deconv_block differ from the previous ones primarily in the use of ###{randomized dropout rates}.
+These new versions of conv_block and deconv_block differ from the previous ones primarily in the use of randomized dropout rates.
+
+Randomized Dropout Rate:
+
+    In both blocks, the dropout rate is no longer fixed. Instead, a random dropout rate between 0.25 and 0.35 is generated for each 
+    application of the block.
+    
+    Advantage:
+        This introduces more stochasticity and regularization into the model during training, helping the model generalize better. 
+        By preventing neurons from co-adapting too strongly, randomized dropout improves the robustness of the network and prevents 
+        overfitting. The random variation in dropout ensures that no specific neuron or connection becomes overly dependent on others, as different 
+        parts of the network are randomly silenced during different iterations of training.
+        
+Aside from this, the core structure remains the same with the Conv2D or Conv2DTranspose followed by LeakyReLU, batch normalization, and dropout.

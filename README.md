@@ -8,11 +8,13 @@ transposecnn2d_downscale_high_res_europ.ipynb
 #### Model Architecture
 i. Input Layer:
 
-        Shape: Accepts an input tensor of shape input_shape, representing the precipitation data to be downscaled, typically including time, latitude, and longitude dimensions.
+        Shape: Accepts an input tensor of shape input_shape, representing the precipitation data to be downscaled, typically 
+        including time, latitude, and longitude dimensions.
 
 ii. Transposed Convolutional Layers:
 
-The model employs several transposed convolutional layers to gradually refine the input features for achieving higher-resolution outputs.
+The model employs several transposed convolutional layers to gradually refine the input features for achieving higher-resolution 
+outputs.
 
     Layer 1:
         Operation: Transposed Convolution (Conv2DTranspose)
@@ -20,7 +22,8 @@ The model employs several transposed convolutional layers to gradually refine th
         Kernel Size: (3,3)
         Strides: (1,1)
         Activation: Leaky ReLU (α = 0.2)
-        Function: Expands spatial dimensions and extracts high-level features, enabling the model to learn complex patterns in precipitation data.
+        Function: Expands spatial dimensions and extracts high-level features, enabling the model to learn complex patterns in 
+        precipitation data.
 
     Layer 2:
         Filters: 512
@@ -63,15 +66,18 @@ b) wgan_det_train_part2_downscale_high_res_europe.ipynb (continue training inter
 c) wgan_det_model_check.ipynb (generate downscaled data with trained models (intermediate and final))
 
 #### Model Architecture
-This model comprises a generator and a discriminator, implementing a Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP) architecture. Below are the details for each component.
+This model comprises a generator and a discriminator, implementing a Wasserstein Generative Adversarial Network with Gradient Penalty 
+(WGAN-GP) architecture. Below are the details for each component.
 
 i. Generator:
 
-The generator is designed to transform low-dimensional noise or input features into high-dimensional data, typically used for generating synthetic images or precipitation data.
+The generator is designed to transform low-dimensional noise or input features into high-dimensional data, typically used for generating 
+synthetic images or precipitation data.
 
     Input Layer: Accepts an input tensor of shape input_shape, representing the initial features or noise vector.
     Convolutional Blocks:
-        The generator contains six convolutional blocks (conv_block), progressively increasing the number of filters from 16 to 512. Each block consists of:
+        The generator contains six convolutional blocks (conv_block), progressively increasing the number of filters from 16 to 512. Each 
+        block consists of:
             Convolution Layer: Applies convolution with specified filters and kernel size.
             Activation Function: Uses Leaky ReLU (α = 0.2) for non-linearity.
             Batch Normalization: Optional layer to stabilize training.
@@ -92,13 +98,15 @@ The discriminator assesses the authenticity of generated data, distinguishing be
             Activation Function: Leaky ReLU (α = 0.2) for non-linearity.
             Batch Normalization: Optional layer to stabilize training.
             Dropout: Optional layer to reduce overfitting.
-    Max Pooling and Dropout: After the convolutional layers, a max pooling layer reduces spatial dimensions, followed by a dropout layer to further prevent overfitting.
-    Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is real or generated.
+    Max Pooling and Dropout: After the convolutional layers, a max pooling layer reduces spatial dimensions, followed by a dropout layer to 
+    further prevent overfitting.
+    Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is 
+    real or generated.
 iii. Alternative Upsampling Block: upsampling_block
 
-The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. \
-This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing \
-spatial dimensions while extracting meaningful features.
+The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. This method 
+can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing spatial dimensions 
+while extracting meaningful features.
 Function Signature:
 
 Parameters:
@@ -116,8 +124,8 @@ Parameters:
 Operation:
 
     Upsampling:
-        The block begins with an UpSampling2D layer, which increases the spatial dimensions of the input feature maps by the specified upsample_factor. 
-        This operation is performed without learnable parameters, ensuring a straightforward and efficient upsampling method.
+        The block begins with an UpSampling2D layer, which increases the spatial dimensions of the input feature maps by the specified 
+        upsample_factor. This operation is performed without learnable parameters, ensuring a straightforward and efficient upsampling method.
 
     Convolution:
         Following the upsampling, a Conv2D layer applies convolution using the specified number of filters and kernel size. 
@@ -160,7 +168,8 @@ Disadvantages:
 iv. Loss Functions in WGAN-GP Architecture
 
 The following loss functions are designed to optimize the performance of the generator and discriminator in a 
-Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP). These loss functions incorporate key metrics such as the Wasserstein distance, Structural Similarity Index (SSIM), and a penalty term for improved training dynamics.
+Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP). These loss functions incorporate key metrics such as the Wasserstein 
+distance, Structural Similarity Index (SSIM), and a penalty term for improved training dynamics.
 
 a. SSIM Loss: ssim_loss
 
@@ -347,7 +356,8 @@ Functionality:
 
 e. Weight Clipping Function: clip_weights(model, clip_value)
 
-The clip_weights function is responsible for enforcing the weight clipping technique, which is crucial for the stability of the WGAN model by ensuring that the weights of the discriminator model lie within a specific range [−clip_value,clip_value][−clip_value,clip_value].
+The clip_weights function is responsible for enforcing the weight clipping technique, which is crucial for the stability of the WGAN 
+model by ensuring that the weights of the discriminator model lie within a specific range [−clip_value,clip_value][−clip_value,clip_value].
 
 Parameters:
 
@@ -355,7 +365,8 @@ Parameters:
     clip_value (float): The maximum value for the weights. The weights are clipped within the range 
     [−clip_value,clip_value][−clip_value,clip_value].
 
-The function aims to apply weight clipping to all layers of the model that have trainable kernels (weights) to maintain the constraints imposed by the WGAN framework.
+The function aims to apply weight clipping to all layers of the model that have trainable kernels (weights) to maintain the constraints
+imposed by the WGAN framework.
 
 Weight Clipping Process:
 

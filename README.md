@@ -1,6 +1,6 @@
 # Steps to install conda environment
-## 1) '''conda env create -f environment.yaml'''
-## 2) '''conda activate <your_env_name>'''
+1) '''conda env create -f environment.yaml'''
+2) '''conda activate <your_env_name>'''
 
 # Documentation for NN model scripts
 

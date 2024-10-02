@@ -226,3 +226,114 @@ Functionality:
     The discriminator loss is computed as the difference between the average output for fake images and the average output for real 
     images. The goal is to maximize this difference, which indicates that the discriminator is effectively distinguishing real from 
     generated data. This loss is essential for the stability and convergence of the GAN training process.
+
+v. Training Functions for WGAN-GP Model
+
+The following functions are designed to facilitate the training of the Wasserstein Generative Adversarial Network with Gradient Penalty 
+(WGAN-GP) model. Each function plays a critical role in managing data preprocessing, gradient computation, model updates, and overall 
+training logistics.
+
+a. Data Preprocessing: preprocess_data(data)
+
+This function converts raw data into a TensorFlow tensor format and reshapes it for further processing.
+
+Parameters:
+
+    data: A pandas DataFrame/ xarray data-array containing the dataset to be converted.
+
+Returns:
+
+    tf.Tensor: A reshaped tensor containing the data in a format suitable for the model.
+
+Functionality:
+
+    The function utilizes tf.convert_to_tensor to convert the DataFrame values into a TensorFlow tensor of type float32.
+    It reshapes the tensor to add an extra dimension at the end (for channels), making it suitable for image data, which typically expects 
+    a shape of (height,width,channels)(height,width,channels). This transformation is necessary for convolutional layers in the model.
+
+b. Training Step: train_step(coarse_data_batch, fine_data_batch, dis, clip_value)
+
+This is the most important function responsible for the training. This function performs a single training iteration for both the
+generator and discriminator, calculating the respective losses and updating their weights.
+
+Parameters:
+
+    coarse_data_batch (tf.Tensor): A batch of low-resolution input images fed to the generator.
+    fine_data_batch (tf.Tensor): A batch of high-resolution images used as the ground truth for the discriminator.
+    dis (tf.keras.Model): The discriminator model.
+    clip_value (float): The value used to clip the weights of the discriminator for enforcing Lipschitz continuity.
+
+Returns:
+
+    gen_loss (tf.Tensor): The computed loss for the generator.
+    dis_loss (tf.Tensor): The computed loss for the discriminator.
+
+Functionality:
+
+    Gradient Tapes: The function utilizes two tf.GradientTape() contexts to record operations for automatic differentiation,
+    one for the generator (gen_tape) and one for the discriminator (dis_tape).
+    
+    Forward Pass: The generator produces a batch of fake images from the coarse data, and both the real and fake images are 
+    passed to the discriminator.
+    
+    Loss Calculation: The generator loss is computed using the generator_loss function, while the discriminator loss is 
+    computed with discriminator_loss.
+    
+    Gradient Calculation: Gradients for both models are calculated using the recorded tapes.
+    Weight Updates: The gradients are applied to the respective model's trainable variables using optimizers 
+    (gen_optimizer and dis_optimizer).
+    
+    Weight Clipping: The discriminator’s weights are clipped to maintain the Lipschitz constraint, enhancing training stability.
+
+c. Distributed Training Step: distributed_train_step(coarse_data_batch, fine_data_batch, dis, clip_value)
+
+This function enables the training of the WGAN-GP model across multiple devices or replicas, enhancing computational efficiency.
+
+Parameters:
+
+    coarse_data_batch (tf.Tensor): A batch of low-resolution images.
+    fine_data_batch (tf.Tensor): A batch of high-resolution images.
+    dis (tf.keras.Model): The discriminator model.
+    clip_value (float): The value used to clip the weights of the discriminator.
+
+Returns:
+
+    mean_gen_loss (tf.Tensor): The average generator loss across all replicas.
+    mean_dis_loss (tf.Tensor): The average discriminator loss across all replicas.
+
+Functionality:
+
+    The function uses strategy.run() to execute the train_step function in a distributed manner across the available replicas. 
+    Each replica computes its generator and discriminator losses.
+    The mean losses are aggregated using strategy.reduce(), ensuring that the results are synchronized across all devices.
+
+d. Main Training Loop: train_gan(gen, dis, coarse_data_train, fine_data_train, clip_value, epochs, batch_size, save_intermediate=True)
+
+This function orchestrates the entire training process of the WGAN-GP model, managing the dataset, running multiple training epochs,
+and saving model checkpoints.
+
+Parameters:
+
+    gen (tf.keras.Model): The generator model.
+    dis (tf.keras.Model): The discriminator model.
+    coarse_data_train (pd.DataFrame/ xarray data-array): The training dataset of low-resolution images.
+    fine_data_train (pd.DataFrame/ xarray data-array): The training dataset of high-resolution images.
+    clip_value (float): The value used to clip the discriminator weights.
+    epochs (int): The total number of training epochs.
+    batch_size (int): The number of samples per batch.
+    save_intermediate (bool): A flag indicating whether to save model checkpoints during training.
+
+Functionality:
+
+    Dataset Preparation: The function creates a TensorFlow dataset from the preprocessed training data, shuffling and batching it 
+    appropriately for training.
+    
+    Training Loop: For each epoch, it initializes cumulative loss variables for the generator and discriminator, iterating over
+    the batches in the distributed dataset.
+    
+    Loss Accumulation: The losses from each batch are accumulated, and averages are calculated for both models after processing 
+    all batches.
+    Logging: At regular intervals (every 10 epochs), it logs the average losses to the console for monitoring training progress.
+    
+    Model Saving: If enabled (recommended), the function saves intermediate versions of both the generator and discriminator models 
+    every 50 epochs for potential future use or analysis.

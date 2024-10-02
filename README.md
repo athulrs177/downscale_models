@@ -58,3 +58,32 @@ b) wgan_det_train_part2_downscale_high_res_europe.ipynb (continue training inter
 
 c) wgan_det_model_check.ipynb (generate downscaled data with trained models (intermediate and final))
 #### Model Architecture
+This model comprises a generator and a discriminator, implementing a Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP) architecture. Below are the details for each component.
+i. Generator:
+
+The generator is designed to transform low-dimensional noise or input features into high-dimensional data, typically used for generating synthetic images or precipitation data.
+
+    Input Layer: Accepts an input tensor of shape input_shape, representing the initial features or noise vector.
+    Convolutional Blocks:
+        The generator contains six convolutional blocks (conv_block), progressively increasing the number of filters from 16 to 512. Each block consists of:
+            Convolution Layer: Applies convolution with specified filters and kernel size.
+            Activation Function: Uses Leaky ReLU (α = 0.2) for non-linearity.
+            Batch Normalization: Optional layer to stabilize training.
+            Dropout: Optional layer to reduce overfitting.
+    Upsampling Blocks:
+        The generator includes five upsampling blocks (deconv_block) to upscale the feature maps, with the final upsampling layer (Conv2DTranspose) generating the output with a shape suitable for the application (e.g., precipitation data).
+    Output Layer: The final layer uses a transposed convolution with 1 filter and a ReLU activation function to produce the output tensor.
+
+ii. Discriminator:
+
+The discriminator assesses the authenticity of generated data, distinguishing between real and synthetic samples.
+
+    Input Layer: Takes an input tensor of shape input_shape, representing the data to be classified (real or generated).
+    Convolutional Blocks:
+        The discriminator consists of three convolutional blocks, increasing the number of filters from 128 to 512, each with:
+            Convolution Layer: Applies convolution with specified filters and kernel size.
+            Activation Function: Leaky ReLU (α = 0.2) for non-linearity.
+            Batch Normalization: Optional layer to stabilize training.
+            Dropout: Optional layer to reduce overfitting.
+    Max Pooling and Dropout: After the convolutional layers, a max pooling layer reduces spatial dimensions, followed by a dropout layer to further prevent overfitting.
+    Output Layer: A convolution layer with 1 filter and a linear activation function outputs the final score indicating whether the input is real or generated.

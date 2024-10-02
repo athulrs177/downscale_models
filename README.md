@@ -65,7 +65,7 @@ The generator is designed to transform low-dimensional noise or input features i
 
     Input Layer: Accepts an input tensor of shape input_shape, representing the initial features or noise vector.
     Convolutional Blocks:
-        The generator contains six convolutional blocks '''(conv_block)''', progressively increasing the number of filters from 16 to 512. Each block consists of:
+        The generator contains six convolutional blocks (conv_block), progressively increasing the number of filters from 16 to 512. Each block consists of:
             Convolution Layer: Applies convolution with specified filters and kernel size.
             Activation Function: Uses Leaky ReLU (α = 0.2) for non-linearity.
             Batch Normalization: Optional layer to stabilize training.

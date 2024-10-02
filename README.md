@@ -415,7 +415,7 @@ Randomized Dropout Rate:
     Advantage:
         This introduces more stochasticity and regularization into the model during training, helping the model generalize better. 
         By preventing neurons from co-adapting too strongly, randomized dropout improves the robustness of the network and prevents 
-        overfitting. The random variation in dropout ensures that no specific neuron or connection becomes overly dependent on others, as different 
-        parts of the network are randomly silenced during different iterations of training.
+        overfitting. The random variation in dropout ensures that no specific neuron or connection becomes overly dependent on others,
+        as different parts of the network are randomly silenced during different iterations of training.
         
 Aside from this, the core structure remains the same with the Conv2D or Conv2DTranspose followed by LeakyReLU, batch normalization, and dropout.

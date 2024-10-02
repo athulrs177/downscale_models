@@ -499,6 +499,6 @@ Detailed Explanation:
 
 ##### Note: 
 Unlike the deterministic models, the outputs generated using the probabilistic model will not be exactly reproducible due to the stochasticity
-inherent in the model's arhcitecture.
+inherent in the model's architecture.
 
 Aside from these, the core structure remains the same with the det. WGAN-GP in terms of training and prediction.

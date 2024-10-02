@@ -381,3 +381,6 @@ distributions.
 Lipschitz Continuity: The weight clipping guarantees that the discriminator behaves like a 1-Lipschitz function, i.e., a function 
 whose gradients are bounded. This prevents the discriminator from becoming overly confident, which can destabilize the training process.
 
+#### References:
+1. Wasserstein GAN; https://arxiv.org/abs/1701.07875.
+2. Improved Training of Wasserstein GANs; https://arxiv.org/abs/1704.00028v3

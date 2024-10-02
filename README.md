@@ -348,7 +348,8 @@ The clip_weights function is responsible for enforcing the weight clipping techn
 Parameters:
 
     model (tf.keras.Model): The Keras model (typically the discriminator in WGAN) whose weights will be clipped.
-    clip_value (float): The maximum value for the weights. The weights are clipped within the range [−clip_value,clip_value][−clip_value,clip_value].
+    clip_value (float): The maximum value for the weights. The weights are clipped within the range 
+    [−clip_value,clip_value][−clip_value,clip_value].
 
 The function aims to apply weight clipping to all layers of the model that have trainable kernels (weights) to maintain the constraints imposed by the WGAN framework.
 
@@ -358,18 +359,25 @@ Weight Clipping Process:
         The function loops through every layer in the model using for layer in model.layers.
 
     b. Checking for Trainable Weights (Kernels):
-        For each layer, it checks whether the layer has an attribute called kernel using hasattr(layer, 'kernel'). The kernel attribute refers to the trainable weights of the layer, which are typically present in layers like Conv2D, Dense, etc.
+        For each layer, it checks whether the layer has an attribute called kernel using hasattr(layer, 'kernel'). The kernel 
+        attribute refers to the trainable weights of the layer, which are typically present in layers like Conv2D, Dense, etc.
 
     c. Clipping the Weights:
         If the layer has a kernel, the function accesses the kernel (weights) via layer.kernel.
-        It then clips the values of the weights using tf.clip_by_value(kernel, -clip_value, clip_value). This ensures that every weight in the kernel remains within the range [−clip_value,clip_value][−clip_value,clip_value]. If a weight exceeds this           range, it is replaced with either the minimum or maximum value.
+        It then clips the values of the weights using tf.clip_by_value(kernel, -clip_value, clip_value). This ensures that 
+        every weight in the kernel remains within the range [−clip_value,clip_value][−clip_value,clip_value]. If a weight exceeds
+        this range, it is replaced with either the minimum or maximum value.
 
     d. Updating the Weights:
-        The clipped kernel is assigned back to the layer's weights using layer.kernel.assign(clipped_kernel), effectively updating the model with the new, clipped weights.
+        The clipped kernel is assigned back to the layer's weights using layer.kernel.assign(clipped_kernel), effectively updating
+        the model with the new, clipped weights.
 
 Why is Weight Clipping Important?
 
-In the WGAN (Wasserstein GAN) framework, weight clipping plays a key role in ensuring that the discriminator satisfies the Lipschitz continuity condition. This condition is necessary to compute a meaningful Wasserstein distance between the real and generated data distributions.
+In the WGAN (Wasserstein GAN) framework, weight clipping plays a key role in ensuring that the discriminator satisfies the Lipschitz 
+continuity condition. This condition is necessary to compute a meaningful Wasserstein distance between the real and generated data 
+distributions.
 
-Lipschitz Continuity: The weight clipping guarantees that the discriminator behaves like a 1-Lipschitz function, i.e., a function whose gradients are bounded. This prevents the discriminator from becoming overly confident, which can destabilize the training process.
+Lipschitz Continuity: The weight clipping guarantees that the discriminator behaves like a 1-Lipschitz function, i.e., a function 
+whose gradients are bounded. This prevents the discriminator from becoming overly confident, which can destabilize the training process.
 

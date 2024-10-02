@@ -61,6 +61,7 @@ a) wgan_det_downscale_high_res_europe.ipynb (initial few runs),
 b) wgan_det_train_part2_downscale_high_res_europe.ipynb (continue training intermediate saved models with modified params),
 
 c) wgan_det_model_check.ipynb (generate downscaled data with trained models (intermediate and final))
+
 #### Model Architecture
 This model comprises a generator and a discriminator, implementing a Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP) architecture. Below are the details for each component.
 
@@ -387,3 +388,21 @@ whose gradients are bounded. This prevents the discriminator from becoming overl
 #### References:
 1. Wasserstein GAN; https://arxiv.org/abs/1701.07875.
 2. Improved Training of Wasserstein GANs; https://arxiv.org/abs/1704.00028v3
+
+
+## 3) Probabilistic Wasserstein GAN with gradient penalalties (prob. WGAN-GP)
+
+### Notebooks: 
+a) wgan_prob_downscale_high_res_europe.ipynb (initial few runs), 
+
+b) wgan_prob_train_part2_downscale_high_res_europe.ipynb (continue training intermediate saved models with modified params),
+
+c) wgan_prob_model_check.ipynb (generate downscaled data with trained models (intermediate and final))
+
+#### Model Architecture
+
+The model architecture of probabilistic WGAN model is very similar to the deterministic version but with some key differences to enable 
+the generation of an ensemble of downscaled outputs. These differences are explained here.
+
+i. Generator and Discriminator architecture
+These new versions of conv_block and deconv_block differ from the previous ones primarily in the use of ###{randomized dropout rates}.

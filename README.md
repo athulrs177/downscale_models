@@ -1,13 +1,24 @@
-# Steps to create the exact conda environment (Optional)
+# Steps to create the exact conda environment
 
-1) ```
+### 1) Create conda environment
+ ```
    conda env create -f nn_env_athul.yaml
-   ```
-
-
-2) ```
+  ```
+If you want to edit the name of the environment, then open ```nn_env_athul.yaml``` in a text editor or vim and
+edit the line ```name: nn_env_athul``` to the name of your liking. Make sure to update the following instructions
+to reflect this change.
+ 
+ ```
    conda activate <your_env_name>
    ```
+### 2) Install Jupyter Notebook and environment as kernel (Optional)
+```
+conda activate <your_env_name>
+conda install jupyter
+```
+```
+python -m ipykernel install --user --name <your_env_name> --display-name "Python (your_env_name)"
+```
 
 # Documentation for NN model scripts
 

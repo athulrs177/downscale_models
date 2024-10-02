@@ -53,6 +53,8 @@ iii. Output Layer:
 ## 2) Deterministic Wasserstein GAN with gradient penalalties (det. WGAN-GP)
 ### Notebooks: 
 a) wgan_det_downscale_high_res_europe.ipynb (initial few runs), 
+
 b) wgan_det_train_part2_downscale_high_res_europe.ipynb (continue training intermediate saved models with modified params),
+
 c) wgan_det_model_check.ipynb (generate downscaled data with trained models (intermediate and final))
 #### Model Architecture

@@ -4,7 +4,7 @@
  ```
    conda env create -f nn_env_athul.yaml
   ```
-If you want to edit the name of the environment, then open ```nn_env_athul.yaml``` in a text editor or vim and
+If you want to edit the name of the environment, then open ```nn_env_athul.yaml``` in a text editor and
 edit the line ```name: nn_env_athul``` to the name of your liking. Make sure to update the following instructions
 to reflect this change.
  

@@ -43,7 +43,7 @@ iii. Output Layer:
 
         Operation: Transposed Convolution (Conv2DTranspose)
         Filters: 1 (single-channel output)
-        Kernel Size: (6,6) (Kernel size increase to avoid gaps with strides of 5)
+        Kernel Size: (6,6) (Increased kernel size to avoid gaps with strides of 5)
         Strides: (5,5) (Significant upscaling)
         Activation: ReLU
         Function: Generates the downscaled precipitation output, expanding input features to the desired lower-resolution output, effectively downscaling precipitation data by a factor of 10 in both latitude and longitude.

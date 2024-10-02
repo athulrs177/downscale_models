@@ -92,10 +92,6 @@ iii. Alternative Upsampling Block: upsampling_block
 The upsampling_block is designed to perform efficient upsampling by combining an upsampling layer with a convolutional layer. This method can serve as an alternative to the previously used deconv_block (which employs Conv2DTranspose) for increasing spatial dimensions while extracting meaningful features.
 Function Signature:
 
-python
-
-def upsampling_block(inputs, filters, kernel_size, upsample_factor, name, dilation_rate, strides, use_batch_norm=True, use_dropout=True):
-
 Parameters:
 
     inputs: Tensor input from the previous layer, representing the feature maps to be upsampled.

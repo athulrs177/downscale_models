@@ -151,3 +151,76 @@ Disadvantages:
     
     Longer training times: Since the learned-upsampling (using transposed convolutions) is split into simple upsampling first 
     followed by convolutions which learn the necessary weights, this alternative method is seen to be significanlty slower.  
+
+iv. Loss Functions in WGAN-GP Architecture
+
+The following loss functions are designed to optimize the performance of the generator and discriminator in a 
+Wasserstein Generative Adversarial Network with Gradient Penalty (WGAN-GP). These loss functions incorporate key metrics such as the Wasserstein distance, Structural Similarity Index (SSIM), and a penalty term for improved training dynamics.
+
+a. SSIM Loss: ssim_loss
+
+This function computes the Structural Similarity Index (SSIM) loss between generated (fake) images and real images.
+
+Parameters:
+
+    fake_images (tf.Tensor): The generated images produced by the generator.
+    real_images (tf.Tensor): The real images used for comparison.
+
+Returns:
+
+    tf.Tensor: The SSIM loss, defined as 1−mean(SSIM)1−mean(SSIM), where a higher SSIM value indicates greater similarity between
+    the images. Thus, a lower SSIM loss reflects better performance in preserving image quality and structural integrity.
+
+Functionality:
+
+    SSIM is a perceptual metric that evaluates the similarity between two images based on luminance, contrast, and structure. 
+    The SSIM loss helps the generator produce images that are not only realistic in pixel values but also visually coherent when compared to real images.
+
+b. Generator Loss: generator_loss
+
+This function calculates the overall loss for the generator, combining the Wasserstein loss, a penalty term, and SSIM loss to ensure 
+high-quality image generation.
+
+Parameters:
+
+    fake_output (tf.Tensor): The output from the discriminator for the generated images.
+    fake_images (tf.Tensor): The generated images.
+    real_images (tf.Tensor): The real images used for comparison.
+    penalty_weight (float): The weight applied to the penalty term, controlling its influence on the total loss (default: 15).
+    ssim_weight (float): The weight applied to the SSIM loss term, adjusting its impact on the total loss (default: 15).
+
+Returns:
+
+    tf.Tensor: The computed generator loss.
+
+Functionality:
+
+    Wasserstein Loss: The generator aims to minimize the average output of the discriminator for the fake images. The Wasserstein 
+    loss is computed as the negative mean of fake_output, which encourages the generator to produce outputs that the discriminator 
+    scores positively.
+    
+    Penalty Term: This term penalizes deviations between generated and real images, encouraging the generator to produce images 
+    that closely resemble real data. It is calculated as the mean absolute difference between fake_images and real_images, scaled 
+    by the penalty_weight.
+    
+    SSIM Loss: This additional term assesses the structural similarity between the generated and real images, further guiding the 
+    generator to improve the perceptual quality of its outputs.
+
+c. Discriminator Loss: discriminator_loss
+
+This function calculates the loss for the discriminator, measuring its ability to distinguish between real and fake images.
+
+Parameters:
+
+    real_output (tf.Tensor): The output from the discriminator for the real images.
+    fake_output (tf.Tensor): The output from the discriminator for the generated images.
+
+Returns:
+
+    tf.Tensor: The computed discriminator loss.
+
+Functionality:
+
+    The discriminator loss is computed as the difference between the average output for fake images and the average output for real 
+    images. The goal is to maximize this difference, which indicates that the discriminator is effectively distinguishing real from 
+    generated data. This loss is essential for the stability and convergence of the GAN training process.

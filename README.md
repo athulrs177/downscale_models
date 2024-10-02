@@ -22,21 +22,21 @@ The model employs several transposed convolutional layers to gradually refine th
         Filters: 512
         Kernel Size: (3,3)
         Strides: (1,1)
-        Activation: Leaky ReLU
+        Activation: Leaky ReLU (α = 0.2)
         Function: Enhances feature extraction, refining learned representations.
 
     Layer 3:
         Filters: 128
         Kernel Size: (3,3)
         Strides: (1,1)
-        Activation: Leaky ReLU
+        Activation: Leaky ReLU (α = 0.2)
         Function: Continues to extract meaningful features while preserving spatial resolution.
 
     Layer 4:
         Filters: 32
         Kernel Size: (3,3)
         Strides: (2,2) (Downsampling)
-        Activation: Leaky ReLU
+        Activation: Leaky ReLU (α = 0.2)
         Function: Reduces spatial dimensions by a factor of 2 while learning lower-level features critical for the upscaling process.
 
 iii. Output Layer:

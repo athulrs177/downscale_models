@@ -433,7 +433,7 @@ Detailed Explanation:
 
     Initialization of the Ensemble:
     The function starts by creating an empty list to store the downscaled precipitation outputs for each ensemble member. The ensemble size 
-    is defined by the num_members parameter (typically set to 10), representing the number of distinct precipitation realizations the 
+    is defined by the num_members parameter (default: 10; 50 used in the notebook; change only during the application), representing the number of distinct precipitation realizations the 
     function will generate. This is particularly important in probabilistic modeling, where multiple forecasts are needed to account for 
     variability and uncertainty.
 

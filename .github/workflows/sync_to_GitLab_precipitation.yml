@@ -17,15 +17,15 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "athulrs177@gmail.com"
+          git config --global user.name "Athul Rasheeda Satheesh"
 
       - name: Clone GitLab repository
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           # Clone the GitLab repository with authentication
-          git clone https://oauth2:${GITLAB_TOKEN}@gitlab.com/username/gitlab-repo.git gitlab-repo
+          git clone https://oauth2:${GITLAB_TOKEN}@gitlab.kit.edu/kit/imk-tro/wg-pinto/projects/aon.git
 
       - name: Sync to Precipitation Directory in GitLab
         run: |

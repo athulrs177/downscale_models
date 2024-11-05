@@ -3,7 +3,7 @@ name: Sync to GitLab Precipitation Directory
 on:
   push:
     branches:
-      - main  # Adjust this to your default branch name if different
+      - master  # Adjust this to your default branch name if different
 
 jobs:
   sync:

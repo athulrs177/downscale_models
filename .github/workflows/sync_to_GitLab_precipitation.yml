@@ -1,0 +1,44 @@
+name: Sync to GitLab Precipitation Directory
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to your default branch name if different
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub repository content
+        uses: actions/checkout@v2
+        with:
+          # Fetch only the latest commit to speed up the sync process
+          fetch-depth: 1
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "Your Name"
+
+      - name: Clone GitLab repository
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          # Clone the GitLab repository with authentication
+          git clone https://oauth2:${GITLAB_TOKEN}@gitlab.com/username/gitlab-repo.git gitlab-repo
+
+      - name: Sync to Precipitation Directory in GitLab
+        run: |
+          # Remove current contents of the precipitation directory
+          rm -rf gitlab-repo/precipitation/*
+          
+          # Copy all files from GitHub repo to the precipitation directory in GitLab
+          cp -r * gitlab-repo/precipitation/
+
+          # Navigate to the GitLab repo directory
+          cd gitlab-repo
+          
+          # Commit and push changes to GitLab
+          git add precipitation/
+          git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab"
+          git push

@@ -25,7 +25,7 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           # Clone the GitLab repository with authentication
-          git clone https://oauth2:${GITLAB_TOKEN}@gitlab.kit.edu/kit/imk-tro/wg-pinto/projects/aon.git
+          git clone https://oauth2:${GITLAB_TOKEN}@gitlab.kit.edu/kit/imk-tro/wg-pinto/projects/aon.git gitlab-repo
 
       - name: Sync to Precipitation Directory in GitLab
         run: |

@@ -38,6 +38,12 @@ jobs:
       - name: Commit and push changes to GitLab
         run: |
           cd gitlab-repo
+          # Pull any new changes from GitLab and rebase to avoid conflicts
+          git pull --rebase origin main
+          
+          # Add and commit the new changes from GitHub
           git add precipitation/
           git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab" || echo "No changes to commit"
+          
+          # Push the changes to GitLab
           git push -f

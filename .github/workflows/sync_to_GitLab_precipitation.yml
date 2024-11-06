@@ -32,13 +32,12 @@ jobs:
           # Remove current contents of the precipitation directory
           rm -rf gitlab-repo/precipitation/*
           
-          # Copy all files from GitHub repo to the precipitation directory in GitLab
-          cp -r * gitlab-repo/precipitation/
+          # Copy all files from the root of the GitHub repository to the precipitation directory in GitLab, excluding gitlab-repo
+          rsync -a --exclude='gitlab-repo' . gitlab-repo/precipitation/
 
-          # Navigate to the GitLab repo directory
+      - name: Commit and push changes to GitLab
+        run: |
           cd gitlab-repo
-          
-          # Commit and push changes to GitLab
           git add precipitation/
-          git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab"
-          git push
+          git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab" || echo "No changes to commit"
+          git push -f

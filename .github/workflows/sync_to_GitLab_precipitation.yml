@@ -12,8 +12,7 @@ jobs:
       - name: Checkout GitHub repository content
         uses: actions/checkout@v2
         with:
-          # Fetch only the latest commit to speed up the sync process
-          fetch-depth: 1
+          fetch-depth: 1  # Fetch only the latest commit to speed up the sync process
 
       - name: Configure Git
         run: |
@@ -24,8 +23,13 @@ jobs:
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
-          # Clone the GitLab repository with authentication
+          # Clone the GitLab repository into gitlab-repo directory
           git clone https://oauth2:${GITLAB_TOKEN}@gitlab.kit.edu/kit/imk-tro/wg-pinto/projects/aon.git gitlab-repo
+          cd gitlab-repo
+          git config pull.ff only  # To avoid accidental merges on pull
+
+      - name: Ensure precipitation directory exists
+        run: mkdir -p gitlab-repo/precipitation
 
       - name: Sync to Precipitation Directory in GitLab
         run: |
@@ -38,12 +42,15 @@ jobs:
       - name: Commit and push changes to GitLab
         run: |
           cd gitlab-repo
+          
+          # Stage all changes in the precipitation directory
+          git add precipitation/
+          
+          # Commit changes with a message, if there are any changes to commit
+          git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab" || echo "No changes to commit"
+
           # Pull any new changes from GitLab and rebase to avoid conflicts
           git pull --rebase origin main
-          
-          # Add and commit the new changes from GitHub
-          git add precipitation/
-          git commit -m "Sync changes from GitHub repository to precipitation directory in GitLab" || echo "No changes to commit"
           
           # Push the changes to GitLab
           git push -f
